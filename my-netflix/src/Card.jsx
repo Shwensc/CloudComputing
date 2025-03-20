@@ -10,6 +10,13 @@ import dexterImg from './assets/dexter.jpg';
 import houseImg from './assets/house.jpg';
 
 export default function ImgMediaCard() {
+    // Series Data
+    const seriesList = [
+        { id: 1, title: "House M.D.", description: "An antisocial doctor solves medical mysteries.", image: houseImg },
+        { id: 2, title: "Dahmer", description: "A chilling true-crime series about Jeffrey Dahmer.", image: dahmerImg },
+        { id: 3, title: "Dexter", description: "A forensic expert with a dark secret: he's a serial killer.", image: dexterImg }
+    ];
+
     // Function to handle adding a series
     const handleAddSeries = async () => {
         try {
@@ -17,9 +24,9 @@ export default function ImgMediaCard() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    title: "House M.D.",
-                    description: "An antisocial doctor solves medical mysteries.",
-                    image:"hi.jpg"
+                    title: "New Series",
+                    description: "Description of the new series.",
+                    image: "new.jpg"
                 })
             });
 
@@ -31,20 +38,19 @@ export default function ImgMediaCard() {
         }
     };
 
-    // Function to handle update a series
-    const handleUpdateSeries = async () => {
+    // Function to handle updating a series
+    const handleUpdateSeries = async (id) => {
         try {
-            const response = await fetch('http://localhost:5000/updateSeries/3', {
-                method: 'PUT', // PUT request for updating
+            const response = await fetch(`http://localhost:5000/updateSeries/${id}`, {
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    id: 3, // Replace with actual series ID
-                    title: "House M.D. (Updated)",
-                    description: "Updated description for House M.D.",
-                    image:"hi.jpg"
+                    title: "Updated Title",
+                    description: "Updated description for the series.",
+                    image: "updated.jpg"
                 })
             });
-    
+
             const data = await response.json();
             alert(data.message); // Show success or error message
         } catch (error) {
@@ -52,17 +58,15 @@ export default function ImgMediaCard() {
             alert("Failed to update series.");
         }
     };
-    //Funtion to delete a series
-    const handleDeleteSeries = async () => {
+
+    // Function to handle deleting a series
+    const handleDeleteSeries = async (id) => {
         try {
-            const response = await fetch('http://localhost:5000/deleteSeries/1', {
-                method: 'DELETE', // DELETE request for removing
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: 1 // Replace with actual series ID
-                })
+            const response = await fetch(`http://localhost:5000/deleteSeries/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
             });
-    
+
             const data = await response.json();
             alert(data.message); // Show success or error message
         } catch (error) {
@@ -70,65 +74,54 @@ export default function ImgMediaCard() {
             alert("Failed to delete series.");
         }
     };
-    
 
     return (
         <>
-            <div style={{ display: 'flex', gap: '20px' }}> {/* using flexbox */}
-                {/* House Card */}
-                <Card sx={{
-                    maxWidth: 345,
-                    border: '2px solid transparent',
-                    transition: 'border-color 0.3s ease-in-out',
-                    '&:hover': {
-                        borderColor: 'rgb(243, 255, 105)',
-                        animation: 'shake 0.3s ease-in-out'
-                    },
-                    '@keyframes shake': {
-                        '0%': { transform: 'translateX(0)' },
-                        '25%': { transform: 'translateX(-5px)' },
-                        '50%': { transform: 'translateX(5px)' },
-                        '75%': { transform: 'translateX(-5px)' },
-                        '100%': { transform: 'translateX(0)' }
-                    }
-                }}>
-                    <CardMedia
-                        component="img"
-                        alt="series1"
-                        height="140"
-                        image={houseImg}
-                    />
+            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                {seriesList.map((series) => (
+                    <Card key={series.id} sx={{
+                        maxWidth: 345,
+                        border: '2px solid transparent',
+                        transition: 'border-color 0.3s ease-in-out',
+                        '&:hover': {
+                            borderColor: 'rgb(243, 255, 105)',
+                            animation: 'shake 0.3s ease-in-out'
+                        },
+                        '@keyframes shake': {
+                            '0%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-5px)' },
+                            '50%': { transform: 'translateX(5px)' },
+                            '75%': { transform: 'translateX(-5px)' },
+                            '100%': { transform: 'translateX(0)' }
+                        }
+                    }}>
+                        <CardMedia component="img" alt={series.title} height="140" image={series.image} />
 
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            House M.D.
-                        </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            Using a crack team of doctors and his wits, an antisocial maverick doctor 
-                            specializing in diagnostic medicine does whatever it takes to solve puzzling 
-                            cases that come his way.
-                        </Typography>
-                    </CardContent>
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                                {series.title}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                {series.description}
+                            </Typography>
+                        </CardContent>
 
-                    {/* All buttons */}
-                    <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button 
-                            sx={{ backgroundColor: 'green', color: 'white', '&:hover': { backgroundColor: 'darkgreen' } }}
-                            onClick={handleAddSeries} // Add function here
-                        >
-                            Add Series
-                        </Button>
-                        <Button sx={{ backgroundColor: 'blue', color: 'white', '&:hover': { backgroundColor: 'darkblue' } }}
-                        onClick={handleUpdateSeries}>
-                            Update Series
-                        </Button>
-                        <Button sx={{ backgroundColor: 'yellow', color: 'black', '&:hover': { backgroundColor: 'gold' } }}
-                        onClick={handleDeleteSeries}>
-                            Delete Series
-                        </Button>
-                    </CardActions>
-                    
-                </Card>
+                        <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Button sx={{ backgroundColor: 'green', color: 'white', '&:hover': { backgroundColor: 'darkgreen' } }}
+                                onClick={handleAddSeries}>
+                                Add Series
+                            </Button>
+                            <Button sx={{ backgroundColor: 'blue', color: 'white', '&:hover': { backgroundColor: 'darkblue' } }}
+                                onClick={() => handleUpdateSeries(series.id)}>
+                                Update Series
+                            </Button>
+                            <Button sx={{ backgroundColor: 'yellow', color: 'black', '&:hover': { backgroundColor: 'gold' } }}
+                                onClick={() => handleDeleteSeries(series.id)}>
+                                Delete Series
+                            </Button>
+                        </CardActions>
+                    </Card>
+                ))}
             </div>
         </>
     );
