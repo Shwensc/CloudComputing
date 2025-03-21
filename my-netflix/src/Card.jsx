@@ -75,26 +75,35 @@ export default function ImgMediaCard() {
         }
     };
 
+    const [hoveredCardId, setHoveredCardId] = React.useState(null);
+
     return (
         <>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
                 {seriesList.map((series) => (
-                    <Card key={series.id} sx={{
-                        maxWidth: 345,
-                        border: '2px solid transparent',
-                        transition: 'border-color 0.3s ease-in-out',
-                        '&:hover': {
-                            borderColor: 'rgb(243, 255, 105)',
-                            animation: 'shake 0.3s ease-in-out'
-                        },
-                        '@keyframes shake': {
-                            '0%': { transform: 'translateX(0)' },
-                            '25%': { transform: 'translateX(-5px)' },
-                            '50%': { transform: 'translateX(5px)' },
-                            '75%': { transform: 'translateX(-5px)' },
-                            '100%': { transform: 'translateX(0)' }
-                        }
-                    }}>
+                    <Card
+                        key={series.id}
+                        sx={{
+                            maxWidth: 345,
+                            border: '2px solid transparent',
+                            transition: 'border-color 0.3s ease-in-out',
+                            '&:hover': {
+                                borderColor: 'rgb(243, 255, 105)',
+                                animation: 'shake 0.3s ease-in-out'
+                            },
+                            '@keyframes shake': {
+                                '0%': { transform: 'translateX(0)' },
+                                '25%': { transform: 'translateX(-5px)' },
+                                '50%': { transform: 'translateX(5px)' },
+                                '75%': { transform: 'translateX(-5px)' },
+                                '100%': { transform: 'translateX(0)' }
+                            },
+                            opacity: hoveredCardId === null || hoveredCardId === series.id ? 1 : 0.2,
+                            transition: 'opacity 0.3s ease'
+                        }}
+                        onMouseEnter={() => setHoveredCardId(series.id)}
+                        onMouseLeave={() => setHoveredCardId(null)}
+                    >
                         <CardMedia component="img" alt={series.title} height="140" image={series.image} />
 
                         <CardContent>
