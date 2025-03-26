@@ -18,16 +18,12 @@ export default function ImgMediaCard() {
     ];
 
     // Function to handle adding a series
-    const handleAddSeries = async () => {
+    const handleAddSeries = async (series) => {
         try {
             const response = await fetch('http://localhost:5000/addSeries', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    title: "New Series",
-                    description: "Description of the new series.",
-                    image: "new.jpg"
-                })
+                body: JSON.stringify(series)
             });
 
             const data = await response.json();
@@ -39,16 +35,12 @@ export default function ImgMediaCard() {
     };
 
     // Function to handle updating a series
-    const handleUpdateSeries = async (id) => {
+    const handleUpdateSeries = async (series) => {
         try {
-            const response = await fetch(`http://localhost:5000/updateSeries/${id}`, {
+            const response = await fetch(`http://localhost:5000/updateSeries/${series.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    title: "Updated Title",
-                    description: "Updated description for the series.",
-                    image: "updated.jpg"
-                })
+                body: JSON.stringify(series)
             });
 
             const data = await response.json();
@@ -117,11 +109,11 @@ export default function ImgMediaCard() {
 
                         <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Button sx={{ backgroundColor: 'green', color: 'white', '&:hover': { backgroundColor: 'darkgreen' } }}
-                                onClick={handleAddSeries}>
+                                onClick={() => handleAddSeries(series)}>
                                 Add Series
                             </Button>
                             <Button sx={{ backgroundColor: 'blue', color: 'white', '&:hover': { backgroundColor: 'darkblue' } }}
-                                onClick={() => handleUpdateSeries(series.id)}>
+                                onClick={() => handleUpdateSeries(series)}>
                                 Update Series
                             </Button>
                             <Button sx={{ backgroundColor: 'yellow', color: 'black', '&:hover': { backgroundColor: 'gold' } }}
