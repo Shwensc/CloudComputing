@@ -10,10 +10,10 @@ app.use(express.json());
 
 // MySQL Database Connection
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root', // Change if using another user
-    password: 'shwen24', // Set your MySQL password
-    database: 'netflixdb' // Ensure this database exists
+    host: 'database-2.cj8aiay8apk5.ap-south-1.rds.amazonaws.com', // RDS Endpoint
+    user: 'admin', // AWS RDS username
+    password: 'shwen24*', // AWS RDS password
+    database: 'netflixdb'
 });
 
 db.connect(err => {
